@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="tu_darmstadt.sudoku.ui.StatsActivity">
+    <item android:id="@+id/action_reset" android:title="@string/reset_stats"
+        android:icon="@drawable/ic_circle_grey_36dp"
+        android:orderInCategory="100" app:showAsAction="never"/>
+    <item android:id="@+id/nav_newgame_main" android:icon="@drawable/ic_menu_home"
+        android:title="Home" />
+
+</menu>
