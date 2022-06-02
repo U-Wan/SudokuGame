@@ -66,7 +66,6 @@ class createboard(type: GameType, difficulty: GameDifficulty) {
     }
 
     private fun clearPuzzle() {
-        // Clear any existing puzzle
         for (i in 0 until BOARD_SIZE) {
             puzzle[i] = 0
         }
@@ -86,41 +85,23 @@ class createboard(type: GameType, difficulty: GameDifficulty) {
         setRecordHistory(false)
         val lHistory = logHistory
         setLogHistory(false)
-        clearPuzzle()
 
-        // Start by getting the randomness in order so that
-        // each puzzle will be different from the last.
         shuffleRandomArrays()
 
-        // Now solve the puzzle the whole way. The solve
-        // uses random algorithms, so we should have a
-        // really randomly totally filled sudoku
-        // Even when starting from an empty grid
         solve()
         if (symmetry === Symmetry.NONE) {
-            // Rollback any square for which it is obvious that
-            // the square doesn't contribute to a unique solution
-            // (ie, squares that were filled by logic rather
-            // than by guess)
+
             rollbackNonGuesses()
         }
 
-        // Record all marked squares as the puzzle so
-        // that we can call countSolutions without losing it.
         for (i in 0 until BOARD_SIZE) {
             puzzle[i] = solution[i]
         }
 
-        // Rerandomize everything so that we test squares
-        // in a different order than they were added.
         shuffleRandomArrays()
 
-        // Remove one value at a time and see if
-        // the puzzle still has only one solution.
-        // If it does, leave it out the point because
-        // it is not needed.
+
         for (i in 0 until BOARD_SIZE) {
-            // check all the positions, but in shuffled order
             val position = randomBoardArray[i]
             if (puzzle[position] > 0) {
                 var positionsym1 = -1
@@ -155,8 +136,7 @@ class createboard(type: GameType, difficulty: GameDifficulty) {
                     )
                     else -> {}
                 }
-                // try backing out the value and
-                // counting solutions to the puzzle
+
                 val savedValue = puzzle[position]
                 puzzle[position] = 0
                 var savedSym1 = 0
@@ -185,18 +165,14 @@ class createboard(type: GameType, difficulty: GameDifficulty) {
             }
         }
 
-        // Clear all solution info, leaving just the puzzle.
         reset()
 
-        // Restore recording history.
         setRecordHistory(recHistory)
         setLogHistory(lHistory)
         return true
     }
 
     private fun rollbackNonGuesses() {
-        // Guesses are odd rounds
-        // Non-guesses are even rounds
         var i = 2
         while (i <= lastSolveRound) {
             rollbackRound(i)

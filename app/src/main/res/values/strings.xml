@@ -139,5 +139,6 @@
     <string name="Home">Home</string>
     <string name="show_statistics">Show Statistics</string>
     <string name="continue_saved_games">Continue saved games</string>
+    <string name="congrats">Congratulations, this is incredible! TSU is proud of you</string>
 
 </resources>

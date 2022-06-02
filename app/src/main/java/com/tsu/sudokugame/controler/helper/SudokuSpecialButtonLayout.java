@@ -18,9 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import com.tsu.sudokugame.controler.GameController;
+import com.tsu.sudokugame.controler.IHintDialogFragmentListener;
 import com.tsu.sudokugame.model.game.listener.IHighlightChangedListener;
 import com.tsu.sudokugame.ui.view.R;
-import com.tsu.sudokugame.controler.listener.IHintDialogFragmentListener;
+
 
 import java.util.LinkedList;
 
@@ -164,7 +165,6 @@ public class SudokuSpecialButtonLayout extends LinearLayout implements IHighligh
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            // Verify that the host activity implements the callback interface
             if(activity instanceof IHintDialogFragmentListener) {
                 listeners.add((IHintDialogFragmentListener) activity);
             }
@@ -172,7 +172,6 @@ public class SudokuSpecialButtonLayout extends LinearLayout implements IHighligh
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppTheme_Dialog);
             builder.setMessage(R.string.hint_confirmation)
                     .setPositiveButton(R.string.hint_confirmation_confirm, new DialogInterface.OnClickListener() {

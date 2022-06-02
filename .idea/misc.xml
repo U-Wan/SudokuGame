@@ -3,11 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/button_inactive.xml" value="0.1465" />
+        <entry key="app/src/main/res/drawable/ic_circle_grey_36dp.xml" value="0.1465" />
+        <entry key="app/src/main/res/drawable/ic_keyboard_arrow_right_black_24dp.xml" value="0.1425" />
         <entry key="app/src/main/res/drawable/ic_menu_home.xml" value="0.1425" />
-        <entry key="app/src/main/res/layout/activity_game_view.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/numpad_highlighted_three.xml" value="0.1465" />
+        <entry key="app/src/main/res/layout/activity_game_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_load_game.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/layout/activity_main_menu.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/layout/activity_stats.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/layout/content_game_view.xml" value="0.18645833333333334" />
-        <entry key="app/src/main/res/layout/win_screen_layout.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/layout/content_game_view_create_sudoku.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_stats.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/layout/list_entry_layout.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/nav_header.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/layout/win_screen_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/menu_drawer.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_drawer_main.xml" value="0.22" />
+        <entry key="app/src/main/res/menu/menu_stats.xml" value="0.33" />
       </map>
     </option>
   </component>

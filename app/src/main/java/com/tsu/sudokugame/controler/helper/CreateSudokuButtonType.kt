@@ -27,3 +27,6 @@ enum class CreateSudokuButtonType(@param:DrawableRes val resID: Int) {
 
     }
 }
+enum class CellHighlightTypes {
+    Default, Selected, Error, Connected, Value_Highlighted, Value_Highlighted_Selected
+}

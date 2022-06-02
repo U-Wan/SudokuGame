@@ -502,14 +502,6 @@ public class GameController implements IModelChangedListener, Parcelable {
 
         notifyHighlightChangedListeners();
     }
-    
-    public void setNoteStatus(boolean enabled) {
-        noteStatus = enabled;
-    }
-
-    public boolean getNoteStatus() {
-        return noteStatus;
-    }
 
     public void deleteSelectedCellsValue() {
         if(isValidCellSelected()) {
@@ -616,12 +608,6 @@ public class GameController implements IModelChangedListener, Parcelable {
         }
     }
 
-    /*public void notifyErrorListener(List<CellConflict> errorList) {
-        for (IGameErrorListener listener : errorListeners){
-            listener.onGameFilledWithErrors(errorList);
-        }
-    }*/
-
     public void registerHintListener(IHintListener listener){
         if (!hintListener.contains(listener)){
             hintListener.add(listener);
@@ -632,10 +618,6 @@ public class GameController implements IModelChangedListener, Parcelable {
         return usedHints;
     }
 
-    public void resetTime() {
-        time = 0;
-        notifyTimerListener(0);
-    }
 
     public void initTimer() {
         deleteTimer();
@@ -771,7 +753,6 @@ public class GameController implements IModelChangedListener, Parcelable {
         }
     };
 
-    /** recreate object from parcel */
     private GameController(Parcel in) {
 
         selectedRow = in.readInt();

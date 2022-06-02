@@ -54,8 +54,8 @@ class StatsActivity : BaseActivity() {
                 mSectionsPagerAdapter!!.refresh(this)
                 return true
             }
-            //TODO:sheqmeni menus ganyofileba home!!!!!!!
-            android.R.id.home -> {
+
+            R.id.go_home -> {
                 finish()
                 val i = Intent(applicationContext, MainActivity::class.java)
                 startActivity(i)
@@ -102,7 +102,7 @@ class StatsActivity : BaseActivity() {
         private var totalHints = 0
         fun refresh(context: Context?) {
             resetGeneral()
-            val s = SaveLoadStatistics(context!!)
+            val s = SaveLoadStatistics(requireContext())
             val stats = s.loadStats(validGameTypes[requireArguments().getInt(ARG_SECTION_NUMBER)])
             var j = 0
             for (i in stats) {

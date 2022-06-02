@@ -19,9 +19,6 @@ import android.content.Intent
 import com.tsu.sudokugame.controler.GameStateManager
 import com.tsu.sudokugame.controler.GameController
 import androidx.core.view.GravityCompat
-import com.tsu.sudokugame.controler.listener.IImportDialogFragmentListener
-import android.app.Activity
-import android.app.DialogFragment
 import android.content.res.Configuration
 import android.preference.PreferenceManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -34,7 +31,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import java.lang.Enum
-import java.util.*
 
 class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     var difficultyBar: RatingBar? = null
@@ -94,7 +90,6 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         val difficultyList = GameDifficulty.validDifficultyList
         difficultyBar!!.numStars = difficultyList.size
         difficultyBar!!.max = difficultyList.size
-       // val createGameBar = findViewById<View>(R.id.circleButton) as CheckBox
 
         difficultyBar!!.onRatingBarChangeListener = object : OnRatingBarChangeListener {
             override fun onRatingChanged(ratingBar: RatingBar, rating: Float, fromUser: Boolean) {
@@ -137,7 +132,7 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         toggle.syncState()
         mNavigationView = findViewById<View>(R.id.nav_view_main) as NavigationView
         mNavigationView!!.setNavigationItemSelectedListener(this)
-        selectNavigationItem(R.id.nav_newgame_main)
+
         overridePendingTransition(0, 0)
     }
 
@@ -159,7 +154,7 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                     editor.putString("lastChosenDifficulty", gameDifficulty.name)
                     editor.apply()
 
-                    // send everything to game activity
+
                     i = Intent(this, GameActivity::class.java)
                     i.putExtra("gameType", gameType.name)
                     i.putExtra("gameDifficulty", gameDifficulty.name)
@@ -189,7 +184,6 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     override fun onResume() {
         super.onResume()
-        selectNavigationItem(R.id.nav_newgame_main)
         refreshContinueButton()
     }
 
@@ -210,23 +204,12 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         val id = item.itemId
         drawer!!.closeDrawer(GravityCompat.START)
 
-        if (id == R.id.nav_newgame_main) {
-            return true
-        }
-
         mHandler!!.postDelayed(object : Runnable {
             override fun run() {
                 goToNavigationItem(id)
             }
         }, NAVDRAWER_LAUNCH_DELAY.toLong())
         return true
-    }
-
-    private fun selectNavigationItem(itemId: Int) {
-        for (i in 0 until mNavigationView!!.menu.size()) {
-            val b = itemId == mNavigationView!!.menu.getItem(i).itemId
-            mNavigationView!!.menu.getItem(i).isChecked = b
-        }
     }
 
     private fun goToNavigationItem(id: Int): Boolean {
@@ -242,15 +225,6 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         return true
     }
 
-    class ImportBoardDialog() : DialogFragment() {
-        private val listeners = LinkedList<IImportDialogFragmentListener>()
-        override fun onAttach(activity: Activity) {
-            super.onAttach(activity)
-            if (activity is IImportDialogFragmentListener) {
-                listeners.add(activity as IImportDialogFragmentListener)
-            }
-        }
-    }
 
     inner class SectionsPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(
         (fm)!!

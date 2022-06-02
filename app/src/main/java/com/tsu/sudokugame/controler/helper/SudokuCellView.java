@@ -54,8 +54,6 @@ public class SudokuCellView extends View {
         a.recycle();
     }
 
-
-
     public void setSelected(boolean b) {
         this.selected = b;
     }

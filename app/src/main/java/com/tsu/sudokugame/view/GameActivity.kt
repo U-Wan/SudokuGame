@@ -3,11 +3,10 @@ package com.tsu.sudokugame.view
 
 
 import com.google.android.material.navigation.NavigationView
-import com.tsu.sudokugame.model.game.listener.IGameSolvedListener
 import com.tsu.sudokugame.model.game.listener.ITimerListener
-import com.tsu.sudokugame.controler.listener.IHintDialogFragmentListener
-import com.tsu.sudokugame.controler.listener.IResetDialogFragmentListener
-import com.tsu.sudokugame.controler.listener.IShareDialogFragmentListener
+import com.tsu.sudokugame.controler.IHintDialogFragmentListener
+import com.tsu.sudokugame.controler.IResetDialogFragmentListener
+import com.tsu.sudokugame.controler.IShareDialogFragmentListener
 import com.tsu.sudokugame.controler.GameController
 import com.tsu.sudokugame.controler.helper.SudokuFieldLayout
 import com.tsu.sudokugame.controler.helper.SudokuKeyboardLayout
@@ -40,10 +39,10 @@ import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.tsu.sudokugame.controler.Symbol
 import com.tsu.sudokugame.model.game.GameDifficulty
+import com.tsu.sudokugame.model.game.listener.IGameSolvedListener
 import java.lang.IllegalArgumentException
 import java.util.*
 
-///sdfsdfsdfsdfas
 class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
     IGameSolvedListener, ITimerListener, IHintDialogFragmentListener, IResetDialogFragmentListener,
     IShareDialogFragmentListener {
@@ -74,10 +73,7 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
 
-        /*
-        If the app is started via a deeplink, the GameActivity is the first activity the user accesses,
-        so we need to set the dark mode settings in this activity as well
-         */if (sharedPref.getBoolean("pref_dark_mode_setting", false)) {
+         if (sharedPref.getBoolean("pref_dark_mode_setting", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else if (sharedPref.getBoolean("pref_dark_mode_automatically_by_system", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -97,10 +93,6 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (savedInstanceState == null) {
             val extras = intent.extras
 
-            /*
-            If a (deep) link is used to access the activity, the content of the link cannot be accessed
-            as a part of the getExtras() bundle. Instead, it needs to be saved as an URI object
-             */
             val data = intent.data
             gameController = GameController(sharedPref, applicationContext)
 
@@ -108,14 +100,9 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             val intentReceivedFromMainActivity = extras != null &&
                     (extras.containsKey("gameType") || extras.containsKey("loadLevel"))
 
-            /*
-            If data is not null and the intent was not received from the MainActivity/ LoadGameActivity, the source of the intent must be the
-            CreateSudokuActivity, the ImportBoardDialog or a deep link, meaning data carries an URI containing an encoded sudoku
-             */if (data != null && !intentReceivedFromMainActivity) {
-                // extract encoded sudoku board from the URI
+             if (data != null && !intentReceivedFromMainActivity) {
                 val input = ""
 
-                // Save all of the information that can be extracted from the encoded board in a GameInfoContainer object
                 var sectionSize = Math.sqrt(input.length.toDouble()).toInt()
                 var boardSize = sectionSize * sectionSize
                 val difficultyCheck: createboard
@@ -126,7 +113,6 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                         IntArray(boardSize),
                         IntArray(boardSize),
                         Array(boardSize) { BooleanArray(sectionSize) })
-                // always set custom sudokus as custom
                 container.isCustom = true
                 try {
                     container.parseGameType("Default_" + sectionSize + "x" + sectionSize)
@@ -137,22 +123,16 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                             GameDifficulty.Unspecified
                         )
 
-                    // calculate difficulty of the imported sudoku
                     difficultyCheck.setRecordHistory(true)
                     difficultyCheck.puzzle = container.fixedValues
                     difficultyCheck.solve()
                     container.parseDifficulty(difficultyCheck.difficulty.toString())
 
-                    // A sudoku is that does not have a unique solution is deemed 'unplayable' and may not be started
                     startGame = difficultyCheck.hasUniqueSolution()
                 } catch (e: IllegalArgumentException) {
-                    // If the imported code does not actually encode a valid sudoku, it needs to be rejected
                     startGame = false
 
-                    /*
-                     set up a blank sudoku field that can be displayed in the activity while the player is notified that
-                     the link they imported does not encode a valid sudoku
-                     */sectionSize = GameType.Default_9x9.size
+                 sectionSize = GameType.Default_9x9.size
                     boardSize = sectionSize * sectionSize
                     container =
                         GameInfoContainer(
@@ -192,11 +172,7 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     }
                 }
 
-                /*
-                The 'isDailySudoku' key is only set by the DailySudokuActivity if a new daily sudoku needs to be calculated;
-                otherwise, the extras simply contain the id of the daily sudoku. Therefore, calculate the new daily sudoko if
-                'isDailySudoku' is true
-                 */
+
                 val loadableGames = GameStateManager.loadableGameList
                 if (loadLevel) {
                     if (loadableGames.size > loadLevelID) {
@@ -238,19 +214,16 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         //toolbar.addView();
 
 
-        //Create new GameField
         layout = findViewById<View>(R.id.sudokuLayout) as SudokuFieldLayout
         gameController!!.registerGameSolvedListener(this)
         gameController!!.registerTimerListener(this)
         statistics.setGameController(gameController!!)
         layout!!.setSettingsAndGame(sharedPref, gameController)
 
-        //set KeyBoard
         keyboard = findViewById<View>(R.id.sudokuKeyboardLayout) as SudokuKeyboardLayout
         keyboard!!.removeAllViews()
         keyboard!!.setGameController(gameController)
-        //keyboard.setColumnCount((gameController.getSize() / 2) + 1);
-        //keyboard.setRowCount(2);
+
         val p = Point()
         windowManager.defaultDisplay.getSize(p)
 
@@ -272,15 +245,12 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             this@GameActivity
         )
 
-        //set TimerView
         timerView = findViewById<View>(R.id.timerView) as TextView
 
 
-        //set GameName
         viewName = findViewById<View>(R.id.gameModeText) as TextView
         viewName!!.text = getString(gameController!!.gameType.stringResID)
 
-        //set Rating bar
         val difficutyList: List<GameDifficulty> =GameDifficulty.validDifficultyList
         val numberOfStarts = difficutyList.size
         ratingBar = findViewById<View>(R.id.gameModeStar) as RatingBar
@@ -361,7 +331,6 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         val id = item.itemId
         var intent: Intent? = null
         when (id) {
@@ -396,16 +365,7 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         gameController!!.pauseTimer()
         gameController!!.deleteGame(this)
 
-        //Save solved sudoku, if it happens to be a daily sudoku, to daily sudoku database
-        if (gameController!!.gameID == GameController.DAILY_SUDOKU_ID) {
-            gameController!!.saveDailySudoku(this@GameActivity)
-            val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
-            val editor = sharedPref.edit()
-           editor.putBoolean("finishedForToday", true)
-            editor.apply()
-        }
 
-        //Don't save statistics if game is custom
         val isNewBestTime: Boolean
         isNewBestTime = if (!gameController!!.gameIsCustom()) {
             //Show time hints new plus old best time
@@ -416,7 +376,6 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 gameController!!.difficulty
             ).minTime >= gameController!!.time)
         } else {
-            // cannot be best time if sudoku is custom
             false
         }
         buildWinDialog(
@@ -445,10 +404,8 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onTick(time: Int) {
 
-        // display the time
         timerView!!.text = timeToString(time)
         if (gameSolved || !startGame) return
-        // save time
         gameController!!.saveGame(this)
     }
 
@@ -470,14 +427,11 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onDialogNegativeClick() {
-        // do nothing
     }
 
     public override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState)
 
-        // Save the user's current game state
         savedInstanceState.putParcelable("gameController", gameController)
         savedInstanceState.putBoolean("gameSolved", gameSolved)
     }
@@ -490,16 +444,6 @@ class GameActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     class ShareBoardDialog : DialogFragment() {
         private val listeners = LinkedList<IShareDialogFragmentListener>()
-
-        private var displayCode = ""
-        private var copyClickListener = View.OnClickListener { }
-        fun setDisplayCode(displayCode: String) {
-            this.displayCode = displayCode
-        }
-
-        fun setCopyClickListener(listener: View.OnClickListener) {
-            copyClickListener = listener
-        }
 
         override fun onAttach(activity: Activity) {
             super.onAttach(activity)

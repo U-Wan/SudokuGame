@@ -8,11 +8,10 @@ import java.util.List;
 
 public class GameBoard implements Cloneable, Parcelable {
 
-    //private int id;
     private GameType gameType;
     private int sectionHeight;
     private int sectionWidth;
-    //private List additionalSections
+
     private int size;
     private GameCell[][] field;
 
@@ -119,8 +118,6 @@ public class GameBoard implements Cloneable, Parcelable {
         }
         errorList.clear();
 
-        // this will automatically build the CellConflict list. so we reset it before we call the checks
-
         for(int i = 0; i < size; i++) {
             if(!checkList(getRow(i), errorList)) solved = false;
             if(!checkList(getColumn(i), errorList)) solved = false;
@@ -141,7 +138,6 @@ public class GameBoard implements Cloneable, Parcelable {
                     isNothingEmpty = false;
                 }
 
-                // Same value in one set should not exist
                 if(c1.getValue() != 0 && c1.getValue() == c2.getValue()) {
                     // we found an error..
                     if(errorList != null) {

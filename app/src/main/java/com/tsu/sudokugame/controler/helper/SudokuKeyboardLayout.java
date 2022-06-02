@@ -127,24 +127,6 @@ public class SudokuKeyboardLayout extends LinearLayout implements IHighlightChan
         gameController.registerHighlightChangedListener(this);
     }
 
-    public void updateNotesEnabled() {
-
-        if(gameController.getNoteStatus()) {
-            setTextSize(TypedValue.COMPLEX_UNIT_SP,normalTextSize*0.55f);
-        } else {
-            setTextSize(TypedValue.COMPLEX_UNIT_SP,normalTextSize);
-        }
-    }
-
-    private void setTextSize(int unit,float size){
-        for (SudokuButton b : buttons){
-            //b.setTextSize(size);
-            b.setTextSize(unit,size);
-        }
-    }
-
-
-
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -159,8 +141,6 @@ public class SudokuKeyboardLayout extends LinearLayout implements IHighlightChan
             boolean numSelected = (gameController.getSelectedValue() == i_btn.getValue());
 
             if(numCompleted) {
-                // Fill color           : darkyellow
-                // Border (if selected) : yellow
                 if(numSelected) {
                     backgroundResId = R.drawable.numpad_selected_complete;
                 } else {

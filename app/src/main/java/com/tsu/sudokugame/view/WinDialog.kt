@@ -3,13 +3,12 @@ package com.tsu.sudokugame.view
 import android.app.Dialog
 import android.os.Bundle
 import android.view.Gravity
-import android.content.Intent
-import android.view.View
-import android.widget.Button
+
 import androidx.fragment.app.DialogFragment
 import com.tsu.sudokugame.ui.view.R
 
 class WinDialog : DialogFragment() {
+
     private var timeString: String? = ""
     private var hintString: String? = ""
     private var isNewBestTime = false
@@ -29,19 +28,11 @@ class WinDialog : DialogFragment() {
         dialog.window!!.setContentView(R.layout.win_screen_layout)
         dialog.window!!.setGravity(Gravity.CENTER_HORIZONTAL)
         dialog.window!!.setBackgroundDrawableResource(R.color.transparent)
-        if (isNewBestTime) {
-        }
-        (dialog.findViewById<View>(R.id.moveinhome) as Button).setOnClickListener {
-            dialog.dismiss()
-            val intent = Intent(activity, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-            if (activity != null) {
-                requireActivity().overridePendingTransition(0, 0)
-                requireActivity().finish()
-            }
-        }
+
         return dialog
+
+
+
     }
 
     override fun onSaveInstanceState(out: Bundle) {

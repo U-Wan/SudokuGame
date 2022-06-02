@@ -24,9 +24,10 @@ import android.widget.TextView;
 
 import com.tsu.sudokugame.controler.GameController;
 import com.tsu.sudokugame.controler.GameStateManager;
+import com.tsu.sudokugame.controler.IDeleteDialogFragmentListener;
 import com.tsu.sudokugame.model.data.GameInfoContainer;
 import com.tsu.sudokugame.model.game.GameDifficulty;
-import com.tsu.sudokugame.controler.listener.IDeleteDialogFragmentListener;
+
 import com.tsu.sudokugame.ui.view.R;
 
 
@@ -57,7 +58,6 @@ public class LoadGameActivity extends BaseActivity implements IDeleteDialogFragm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 finish();
                 return true;
